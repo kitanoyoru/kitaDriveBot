@@ -1,4 +1,4 @@
-BINARY_NAME=bot
+BINARY_NAME=service
 CURRENT_DIR=$(shell pwd)
 export GO111MODULE=on
 
