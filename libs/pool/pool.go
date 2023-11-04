@@ -1,18 +1,18 @@
 package pool
 
 import (
+	"fmt"
 	"sync"
-
-	log "github.com/sirupsen/logrus"
 )
 
-type worker struct {
+type Worker struct {
+	readyWg *sync.WaitGroup
+
 	tasksChannel chan func()
-	readyWg      *sync.WaitGroup
 	closeChannel chan bool
 }
 
-func (w *worker) run() {
+func (w *Worker) Run() {
 	w.readyWg.Done()
 
 	for {
@@ -23,7 +23,7 @@ func (w *worker) run() {
 		case task := <-w.tasksChannel:
 			defer func() {
 				if err := recover(); err != nil {
-					log.Error(err)
+					fmt.Println(err) // change to log.Error
 				}
 			}()
 			task()
@@ -31,8 +31,16 @@ func (w *worker) run() {
 	}
 }
 
+func NewWorker(wg *sync.WaitGroup) *Worker {
+	return &Worker{
+		readyWg:      wg,
+		tasksChannel: make(chan func()),
+		closeChannel: make(chan bool),
+	}
+}
+
 type Pool struct {
-	workers          []*worker
+	workers          []*Worker
 	latestUsedWorker int
 	submitLock       sync.Mutex
 }
@@ -63,20 +71,15 @@ func NewPool(size int) *Pool {
 	readyWg := &sync.WaitGroup{}
 
 	pool := &Pool{
-		workers:    make([]*worker, size),
+		workers:    make([]*Worker, size),
 		submitLock: sync.Mutex{},
 	}
 
 	for i := 0; i < size; i++ {
 		readyWg.Add(1)
 
-		w := &worker{
-			readyWg:      readyWg,
-			tasksChannel: make(chan func()),
-			closeChannel: make(chan bool),
-		}
-		go w.run()
-
+		w := NewWorker(readyWg)
+		go w.Run()
 		pool.workers[i] = w
 	}
 

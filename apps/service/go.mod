@@ -7,7 +7,6 @@ require (
 	github.com/ThreeDotsLabs/watermill-kafka/v2 v2.5.0
 	github.com/kitanoyoru/kitaDriveBot v0.0.0-20221218115907-6214251d13f1
 	github.com/prometheus/client_golang v1.14.0
-	github.com/sirupsen/logrus v1.9.0
 	github.com/spf13/cobra v1.7.0
 	github.com/spf13/viper v1.14.0
 	go.uber.org/zap v1.26.0
@@ -52,6 +51,7 @@ require (
 	github.com/prometheus/common v0.39.0 // indirect
 	github.com/prometheus/procfs v0.9.0 // indirect
 	github.com/rcrowley/go-metrics v0.0.0-20201227073835-cf1acfcdf475 // indirect
+	github.com/sirupsen/logrus v1.9.0 // indirect
 	github.com/spf13/afero v1.9.2 // indirect
 	github.com/spf13/cast v1.5.0 // indirect
 	github.com/spf13/jwalterweatherman v1.1.0 // indirect
