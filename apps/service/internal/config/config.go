@@ -1,7 +1,10 @@
 package config
 
+import "fmt"
+
 type Config struct {
 	Google *GoogleDriveConfig `json:"google,omitempty"`
+	Http   *HttpConfig        `json:"http,omitempty"`
 	Kafka  *KafkaConfig       `json:"kafka,omitempty"`
 	Logger *LoggerConfig      `json:"logger,omitempty"`
 }
@@ -12,12 +15,13 @@ type KafkaConfig struct {
 	MaxRetry   int      `json:"max_retry"`
 }
 
-type PrometheusConfig struct {
+type HttpConfig struct {
+	Host string `json:"host"`
 	Port string `json:"port"`
 }
 
-type HttpConfig struct {
-	Port string `json:"port"`
+func (hc *HttpConfig) GetAddr() string {
+	return fmt.Sprintf("%s:%s", hc.Host, hc.Port)
 }
 
 type GoogleDriveConfig struct {
@@ -26,5 +30,6 @@ type GoogleDriveConfig struct {
 }
 
 type LoggerConfig struct {
+	Type  int    `json:"type"`
 	Level string `json:"level"`
 }

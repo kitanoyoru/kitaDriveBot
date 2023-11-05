@@ -1,28 +1,40 @@
 package logger
 
 import (
+	"errors"
+
 	"github.com/kitanoyoru/kitaDriveBo/apps/service/internal/config"
 	"go.uber.org/zap"
 	"go.uber.org/zap/zapcore"
 )
 
+const (
+	ZapLogger = iota
+)
+
 type Logger struct {
-	backend *zap.Logger
+	Zap *zap.Logger
 }
 
 func NewLogger(config *config.LoggerConfig) (*Logger, error) {
-	options := []zap.Option{
-		zap.AddCaller(),
-		zap.AddStacktrace(zapcore.ErrorLevel),
+	switch config.Type {
+	case ZapLogger:
+		options := []zap.Option{
+			zap.AddCaller(),
+			zap.AddStacktrace(zapcore.ErrorLevel),
+		}
+
+		logger, err := zap.NewProduction(options...)
+		if err != nil {
+			return nil, err
+		}
+		defer logger.Sync()
+
+		return &Logger{
+			Zap: logger,
+		}, nil
+
 	}
 
-	logger, err := zap.NewProduction(options...)
-	if err != nil {
-		return nil, err
-	}
-	defer logger.Sync()
-
-	return &Logger{
-		backend: logger,
-	}, nil
+	return nil, errors.New("requested logger not found")
 }
