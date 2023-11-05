@@ -31,7 +31,7 @@ func NewApp(config *config.Config) (*App, error) {
 	}
 	app.logger = logger
 
-	service, err := service.NewService(config.Google)
+	service, err := service.NewService(config.Google, logger)
 	if err != nil {
 		return nil, err
 	}

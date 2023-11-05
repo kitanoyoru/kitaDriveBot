@@ -12,8 +12,17 @@ type KafkaConfig struct {
 	MaxRetry   int      `json:"max_retry"`
 }
 
+type PrometheusConfig struct {
+	Port string `json:"port"`
+}
+
+type HttpConfig struct {
+	Port string `json:"port"`
+}
+
 type GoogleDriveConfig struct {
-	ApiKey string `json:"api_key,omitempty"`
+	CredentialsPath string `json:"credentials_path"`
+	TokenPath       string `json:"token_path"`
 }
 
 type LoggerConfig struct {
