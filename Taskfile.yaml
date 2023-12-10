@@ -1,0 +1,19 @@
+# See: https://taskfile.dev/api/
+
+version: "3"
+
+tasks:
+  dev:
+    desc: "Install all needed tools for development"
+    cmds:
+      - go install google.golang.org/protobuf/cmd/protoc-gen-go@latest
+      - go install google.golang.org/grpc/cmd/protoc-gen-go-grpc@latest
+      - go install github.com/kisielk/errcheck@latest
+      - go install github.com/golangci/golangci-lint/cmd/golangci-lint@latest
+
+  sync:
+    desc: "Sync all packages"
+    cmds:
+      - go work sync
+
+

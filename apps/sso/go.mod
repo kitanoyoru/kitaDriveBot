@@ -5,9 +5,11 @@ go 1.21
 require (
 	github.com/ThreeDotsLabs/watermill v1.3.5
 	github.com/grpc-ecosystem/go-grpc-middleware v1.4.0
+	github.com/redis/go-redis/v9 v9.3.0
 	github.com/spf13/viper v1.14.0
 	go.uber.org/zap v1.26.0
 	google.golang.org/grpc v1.59.0
+	gorm.io/gorm v1.25.5
 )
 
 require (
@@ -18,6 +20,8 @@ require (
 	github.com/google/go-cmp v0.6.0 // indirect
 	github.com/google/uuid v1.4.0 // indirect
 	github.com/hashicorp/hcl v1.0.0 // indirect
+	github.com/jinzhu/inflection v1.0.0 // indirect
+	github.com/jinzhu/now v1.1.5 // indirect
 	github.com/lithammer/shortuuid/v3 v3.0.7 // indirect
 	github.com/magiconair/properties v1.8.6 // indirect
 	github.com/mitchellh/mapstructure v1.5.0 // indirect
@@ -25,7 +29,6 @@ require (
 	github.com/pelletier/go-toml v1.9.5 // indirect
 	github.com/pelletier/go-toml/v2 v2.0.5 // indirect
 	github.com/pkg/errors v0.9.1 // indirect
-	github.com/redis/go-redis/v9 v9.3.0 // indirect
 	github.com/rogpeppe/go-internal v1.9.0 // indirect
 	github.com/spf13/afero v1.9.2 // indirect
 	github.com/spf13/cast v1.5.0 // indirect

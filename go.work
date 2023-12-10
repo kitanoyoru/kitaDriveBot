@@ -3,12 +3,11 @@ go 1.21.3
 use (
 	./apps/service
 	./apps/sso/
+	./libs/cache
+	./libs/database
 
 	./libs/logger
 	./libs/pool
-    ./libs/cache
-    ./libs/database
-
 
 	./protos
 )
