@@ -5,9 +5,9 @@ import (
 	"net/http"
 
 	"github.com/ThreeDotsLabs/watermill/message"
-	"github.com/kitanoyoru/kitaDriveBot/apps/service/pkg/logger"
 	"github.com/kitanoyoru/kitaDriveBot/apps/sso/internal/api/grpc"
 	"github.com/kitanoyoru/kitaDriveBot/apps/sso/internal/config"
+	"github.com/kitanoyoru/kitaDriveBot/libs/logger"
 )
 
 type App struct {
