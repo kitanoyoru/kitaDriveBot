@@ -2,10 +2,10 @@ go 1.21.3
 
 use (
 	./apps/service
-	./apps/sso/
+	./apps/sso
+
 	./libs/cache
 	./libs/database
-
 	./libs/logger
 	./libs/pool
 

@@ -4,7 +4,6 @@ go 1.21
 
 require (
 	github.com/ThreeDotsLabs/watermill v1.3.5
-	github.com/grpc-ecosystem/go-grpc-middleware v1.4.0
 	github.com/redis/go-redis/v9 v9.3.0
 	github.com/spf13/viper v1.14.0
 	go.uber.org/zap v1.26.0
