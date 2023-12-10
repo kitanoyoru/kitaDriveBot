@@ -1,0 +1,8 @@
+env: "local"
+
+database:
+  url: url 
+
+grpc:
+  port : 44444
+  timeout: 5s

@@ -1,12 +1,16 @@
 package config
 
-import "fmt"
+import (
+	"fmt"
+
+	"github.com/kitanoyoru/kitaDriveBot/libs/logger"
+)
 
 type Config struct {
 	Google *GoogleDriveConfig `json:"google,omitempty"`
 	Http   *HttpConfig        `json:"http,omitempty"`
 	Kafka  *KafkaConfig       `json:"kafka,omitempty"`
-	Logger *LoggerConfig      `json:"logger,omitempty"`
+	Logger *logger.Logger     `json:"logger,omitempty"`
 }
 
 type KafkaConfig struct {
@@ -27,9 +31,4 @@ func (hc *HttpConfig) GetAddr() string {
 type GoogleDriveConfig struct {
 	CredentialsPath string `json:"credentials_path"`
 	TokenPath       string `json:"token_path"`
-}
-
-type LoggerConfig struct {
-	Type  int    `json:"type"`
-	Level string `json:"level"`
 }

@@ -8,7 +8,7 @@ import (
 	"os"
 
 	"github.com/kitanoyoru/kitaDriveBot/apps/service/internal/config"
-	"github.com/kitanoyoru/kitaDriveBot/apps/service/pkg/logger"
+	"github.com/kitanoyoru/kitaDriveBot/libs/logger"
 	"golang.org/x/oauth2"
 	"golang.org/x/oauth2/google"
 	"google.golang.org/api/drive/v3"

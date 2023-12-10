@@ -3,7 +3,6 @@ package logger
 import (
 	"errors"
 
-	"github.com/kitanoyoru/kitaDriveBot/apps/service/internal/config"
 	"go.uber.org/zap"
 	"go.uber.org/zap/zapcore"
 )
@@ -16,7 +15,7 @@ type Logger struct {
 	Zap *zap.Logger
 }
 
-func NewLogger(config *config.LoggerConfig) (*Logger, error) {
+func NewLogger(config *LoggerConfig) (*Logger, error) {
 	switch config.Type {
 	case ZapLogger:
 		options := []zap.Option{

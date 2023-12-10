@@ -10,7 +10,7 @@ import (
 	kafkaAPI "github.com/kitanoyoru/kitaDriveBot/apps/service/internal/api/kafka/v0"
 	"github.com/kitanoyoru/kitaDriveBot/apps/service/internal/config"
 	"github.com/kitanoyoru/kitaDriveBot/apps/service/internal/service"
-	"github.com/kitanoyoru/kitaDriveBot/apps/service/pkg/logger"
+	"github.com/kitanoyoru/kitaDriveBot/libs/logger"
 )
 
 const (
