@@ -3,7 +3,7 @@ package commands
 import (
 	"log"
 
-	"github.com/kitanoyoru/kitaDriveBo/apps/service/internal/config"
+	"github.com/kitanoyoru/kitaDriveBot/apps/service/internal/config"
 	"github.com/spf13/cobra"
 )
 

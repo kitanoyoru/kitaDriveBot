@@ -1,4 +1,4 @@
-module github.com/kitanoyoru/kitaDriveBo/apps/service
+module github.com/kitanoyoru/kitaDriveBot/apps/service
 
 go 1.21
 

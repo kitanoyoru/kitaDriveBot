@@ -3,7 +3,7 @@ package logger
 import (
 	"errors"
 
-	"github.com/kitanoyoru/kitaDriveBo/apps/service/internal/config"
+	"github.com/kitanoyoru/kitaDriveBot/apps/service/internal/config"
 	"go.uber.org/zap"
 	"go.uber.org/zap/zapcore"
 )

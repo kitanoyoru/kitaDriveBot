@@ -4,7 +4,7 @@ import (
 	"github.com/go-chi/chi/v5"
 	"github.com/go-chi/chi/v5/middleware"
 	"github.com/go-chi/cors"
-	"github.com/kitanoyoru/kitaDriveBo/apps/service/internal/service"
+	"github.com/kitanoyoru/kitaDriveBot/apps/service/internal/service"
 )
 
 const (

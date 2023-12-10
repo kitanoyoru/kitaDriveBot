@@ -6,11 +6,11 @@ import (
 	"time"
 
 	"github.com/ThreeDotsLabs/watermill/message"
-	httpAPI "github.com/kitanoyoru/kitaDriveBo/apps/service/internal/api/http/v0"
-	kafkaAPI "github.com/kitanoyoru/kitaDriveBo/apps/service/internal/api/kafka/v0"
-	"github.com/kitanoyoru/kitaDriveBo/apps/service/internal/config"
-	"github.com/kitanoyoru/kitaDriveBo/apps/service/internal/service"
-	"github.com/kitanoyoru/kitaDriveBo/apps/service/pkg/logger"
+	httpAPI "github.com/kitanoyoru/kitaDriveBot/apps/service/internal/api/http/v0"
+	kafkaAPI "github.com/kitanoyoru/kitaDriveBot/apps/service/internal/api/kafka/v0"
+	"github.com/kitanoyoru/kitaDriveBot/apps/service/internal/config"
+	"github.com/kitanoyoru/kitaDriveBot/apps/service/internal/service"
+	"github.com/kitanoyoru/kitaDriveBot/apps/service/pkg/logger"
 )
 
 const (

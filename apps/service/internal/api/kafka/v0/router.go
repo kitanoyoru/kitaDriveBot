@@ -4,8 +4,8 @@ import (
 	"github.com/ThreeDotsLabs/watermill"
 	"github.com/ThreeDotsLabs/watermill-kafka/v2/pkg/kafka"
 	"github.com/ThreeDotsLabs/watermill/message"
-	"github.com/kitanoyoru/kitaDriveBo/apps/service/internal/config"
-	"github.com/kitanoyoru/kitaDriveBo/apps/service/internal/service"
+	"github.com/kitanoyoru/kitaDriveBot/apps/service/internal/config"
+	"github.com/kitanoyoru/kitaDriveBot/apps/service/internal/service"
 )
 
 type KafkaAPI struct {
