@@ -1,7 +1,7 @@
 ARG ALPINE_IMAGE=alpine:3.18
-ARG SSO_BUILD_IMAGE=kitanoyoru/kitaDriveBot.sso:latest
+ARG SSO_BUILDER_IMAGE=kitanoyoru/kitadrivebot.v1.builder:latest
 
-FROM $SSO_BUILD_IMAGE AS build
+FROM $SSO_BUILDER_IMAGE AS build
 
 FROM $ALPINE_IMAGE
 
