@@ -3,8 +3,9 @@ package main
 import (
 	"log"
 
-	"github.com/kitanoyoru/kitaDriveBot/apps/sso/cmd/migrate"
 	"github.com/spf13/cobra"
+
+	"github.com/kitanoyoru/kitaDriveBot/apps/sso/cmd/migrate"
 )
 
 var rootCmd = &cobra.Command{
