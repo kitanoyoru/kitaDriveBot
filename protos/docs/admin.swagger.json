@@ -1,12 +1,12 @@
 {
   "swagger": "2.0",
   "info": {
-    "title": "sso/v1/sso.proto",
+    "title": "user/v1/user.proto",
     "version": "version not set"
   },
   "tags": [
     {
-      "name": "OAuthService"
+      "name": "UserService"
     }
   ],
   "consumes": [
@@ -16,16 +16,34 @@
     "application/json"
   ],
   "paths": {
-    "/api/v1/oauth/token": {
-      "post": {
-        "summary": "Update password",
-        "description": "### Error codes\n\n| Code | Description                   |\n|------|-------------------------------|\n| 201  | Wrong username or password    |\n| 204  | Organization demo has expired |\n| 205  | Organization is blocked       |\n| 206  | User need to set password     |",
-        "operationId": "OAuthService_Authenticate",
+    "/api/v1/users": {
+      "get": {
+        "operationId": "UserService_ListUsers",
         "responses": {
           "200": {
             "description": "A successful response.",
             "schema": {
-              "$ref": "#/definitions/v1OAuthenticateCallResponse"
+              "$ref": "#/definitions/v1ListUsersCallResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "tags": [
+          "UserService"
+        ]
+      },
+      "post": {
+        "operationId": "UserService_CreateUser",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/v1CreateUserCallResponse"
             }
           },
           "default": {
@@ -41,44 +59,127 @@
             "in": "body",
             "required": true,
             "schema": {
-              "$ref": "#/definitions/OAuthenticateCallRequest"
+              "$ref": "#/definitions/v1CreateUserCallRequest"
             }
           }
         ],
         "tags": [
-          "OAuthService"
+          "UserService"
+        ]
+      }
+    },
+    "/api/v1/users/{id}": {
+      "get": {
+        "operationId": "UserService_GetUser",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/v1GetUserCallResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
         ],
-        "security": []
+        "tags": [
+          "UserService"
+        ]
+      },
+      "delete": {
+        "operationId": "UserService_DeleteUser",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/v1DeleteUserCallResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "tags": [
+          "UserService"
+        ]
+      },
+      "put": {
+        "operationId": "UserService_UpdateUser",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/v1UpdateUserCallResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/UserServiceUpdateUserBody"
+            }
+          }
+        ],
+        "tags": [
+          "UserService"
+        ]
       }
     }
   },
   "definitions": {
-    "OAuthenticateCallRequest": {
+    "UserServiceUpdateUserBody": {
       "type": "object",
       "properties": {
-        "grant_type": {
-          "type": "string",
-          "enum": [
-            "password",
-            "refresh_token"
-          ]
-        },
-        "client_id": {
+        "email": {
           "type": "string"
         },
-        "username": {
+        "first_name": {
           "type": "string"
         },
-        "password": {
-          "type": "string"
-        },
-        "refresh_token": {
+        "last_name": {
           "type": "string"
         }
       },
       "required": [
-        "grant_type",
-        "client_id"
+        "first_name",
+        "last_name"
       ]
     },
     "protobufAny": {
@@ -109,23 +210,90 @@
         }
       }
     },
-    "v1OAuthenticateCallResponse": {
+    "v1CreateUserCallRequest": {
       "type": "object",
       "properties": {
-        "access_token": {
+        "email": {
           "type": "string"
         },
-        "refresh_token": {
+        "first_name": {
           "type": "string"
         },
-        "expires_in": {
-          "type": "integer",
-          "format": "int64",
-          "default": "300"
+        "last_name": {
+          "type": "string"
         },
-        "token_type": {
+        "password": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "first_name",
+        "last_name"
+      ]
+    },
+    "v1CreateUserCallResponse": {
+      "type": "object",
+      "properties": {
+        "user": {
+          "$ref": "#/definitions/v1User"
+        }
+      }
+    },
+    "v1DeleteUserCallResponse": {
+      "type": "object"
+    },
+    "v1GetUserCallResponse": {
+      "type": "object",
+      "properties": {
+        "user": {
+          "$ref": "#/definitions/v1User"
+        }
+      }
+    },
+    "v1ListUsersCallResponse": {
+      "type": "object",
+      "properties": {
+        "users": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "$ref": "#/definitions/v1User"
+          }
+        }
+      }
+    },
+    "v1UpdateUserCallResponse": {
+      "type": "object",
+      "properties": {
+        "user": {
+          "$ref": "#/definitions/v1User"
+        }
+      }
+    },
+    "v1User": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string"
+        },
+        "email": {
+          "type": "string"
+        },
+        "first_name": {
+          "type": "string"
+        },
+        "last_name": {
+          "type": "string"
+        },
+        "createdAt": {
           "type": "string",
-          "default": "Bearer"
+          "format": "date-time",
+          "readOnly": true
+        },
+        "updatedAt": {
+          "type": "string",
+          "format": "date-time",
+          "readOnly": true
         }
       }
     }

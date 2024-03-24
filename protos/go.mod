@@ -3,6 +3,7 @@ module github.com/kitanoyoru/kitaDriveBot/protos
 go 1.21
 
 require (
+	github.com/envoyproxy/protoc-gen-validate v1.0.4
 	github.com/grpc-ecosystem/grpc-gateway/v2 v2.19.1
 	google.golang.org/genproto/googleapis/api v0.0.0-20240318140521-94a12d6c2237
 	google.golang.org/grpc v1.62.1

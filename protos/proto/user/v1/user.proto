@@ -1,0 +1,107 @@
+syntax = "proto3";
+
+package user.v1;
+
+option go_package = "user/v1";
+
+import "google/api/annotations.proto";
+import "google/api/field_behavior.proto";
+import "google/protobuf/timestamp.proto";
+import "google/api/validate.proto";
+
+service UserService {
+  rpc ListUsers(ListUsersCall.Request) returns (ListUsersCall.Response) {
+    option (google.api.http) = {
+      get: "/api/v1/users"
+    };
+  }
+
+  rpc CreateUser(CreateUserCall.Request) returns (CreateUserCall.Response) {
+    option (google.api.http) = {
+      post: "/api/v1/users"
+      body: "*"
+    };
+  }
+
+  rpc GetUser(GetUserCall.Request) returns (GetUserCall.Response) {
+    option (google.api.http) = {
+      get: "/api/v1/users/{id}"
+    };
+  }
+
+  rpc UpdateUser(UpdateUserCall.Request) returns (UpdateUserCall.Response) {
+    option (google.api.http) = {
+      put: "/api/v1/users/{id}"
+      body: "*"
+    };
+  }
+
+  rpc DeleteUser(DeleteUserCall.Request) returns (DeleteUserCall.Response) {
+    option (google.api.http) = {
+      delete: "/api/v1/users/{id}"
+    };
+  }
+}
+
+message ListUsersCall {
+  message Request {
+  }
+
+  message Response {
+    repeated User users = 1;
+  }
+}
+
+message GetUserCall {
+  message Request {
+    string id = 1 [(google.api.field_behavior) = REQUIRED];
+  }
+
+  message Response {
+    User user = 1;
+  }
+}
+
+message UpdateUserCall {
+  message Request {
+    string id = 1 [(google.api.field_behavior) = REQUIRED];
+    string email = 2 [(validate.rules).string.email = true];
+    string first_name = 3 [json_name = "first_name", (google.api.field_behavior) = REQUIRED, (validate.rules).string.min_len = 1];
+    string last_name = 4 [json_name = "last_name", (google.api.field_behavior) = REQUIRED, (validate.rules).string.min_len = 1];
+  }
+
+  message Response {
+    User user = 1;
+  }
+}
+
+message CreateUserCall {
+  message Request {
+    string email = 1;
+    string first_name = 2 [json_name = "first_name", (google.api.field_behavior) = REQUIRED, (validate.rules).string.min_len = 1];
+    string last_name = 3 [json_name = "last_name", (google.api.field_behavior) = REQUIRED, (validate.rules).string.min_len = 1];
+    string password = 4;
+  }
+
+  message Response {
+    User user = 1;
+  }
+}
+
+message DeleteUserCall {
+  message Request {
+    string id = 1 [(google.api.field_behavior) = REQUIRED];
+  }
+
+  message Response {
+  }
+}
+
+message User {
+  string id = 1;
+  string email = 2;
+  string first_name = 3 [json_name = "first_name"];
+  string last_name = 4 [json_name = "last_name"];
+  google.protobuf.Timestamp created_at = 5 [(google.api.field_behavior) = OUTPUT_ONLY];
+  google.protobuf.Timestamp updated_at = 6 [(google.api.field_behavior) = OUTPUT_ONLY];
+}
