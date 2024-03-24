@@ -3,10 +3,20 @@
 version: "3"
 
 tasks:
-  generate:
+  mod:
     aliases:
-      - gen
-    desc: "Generate code from proto files"
+      - modtidy
+    desc: "Install all needed packages"
     cmds:
-      - protoc -I proto proto/sso/*.proto --go_out=./gen/go/ --go_opt=paths=source_relative --go-grpc_out=./gen/go/ --go-grpc_opt=paths=source_relative
+      - go mod tidy
+
+  generate-sso:
+    aliases:
+      - gen-sso
+    desc: "Generate SSO Go bindings and OpenAPIv2 spec from proto files"
+    cmds:
+      - rm -rf gen/go/sso
+      - protoc --proto_path=proto --go_out=gen/go --go_opt=paths=source_relative --go-grpc_out=gen/go --go-grpc_opt=paths=source_relative --grpc-gateway_out=gen/go --grpc-gateway_opt=logtostderr=true,paths=source_relative,generate_unbound_methods=true --validate_out lang=go:gen/go --validate_opt=paths=source_relative proto/sso/v1/*.proto
+      - mkdir -p docs
+      - protoc --proto_path=proto --openapiv2_out=docs --openapiv2_opt=use_go_templates=true,allow_merge=true,merge_file_name=admin,json_names_for_fields=true proto/sso/v1/*.proto
 

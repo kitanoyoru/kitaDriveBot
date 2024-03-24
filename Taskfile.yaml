@@ -15,5 +15,6 @@ tasks:
     desc: "Sync all packages"
     cmds:
       - go work sync
+      - go work vendor
 
 

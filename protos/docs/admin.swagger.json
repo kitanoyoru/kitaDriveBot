@@ -1,0 +1,133 @@
+{
+  "swagger": "2.0",
+  "info": {
+    "title": "sso/v1/sso.proto",
+    "version": "version not set"
+  },
+  "tags": [
+    {
+      "name": "OAuthService"
+    }
+  ],
+  "consumes": [
+    "application/json"
+  ],
+  "produces": [
+    "application/json"
+  ],
+  "paths": {
+    "/api/v1/oauth/token": {
+      "post": {
+        "summary": "Update password",
+        "description": "### Error codes\n\n| Code | Description                   |\n|------|-------------------------------|\n| 201  | Wrong username or password    |\n| 204  | Organization demo has expired |\n| 205  | Organization is blocked       |\n| 206  | User need to set password     |",
+        "operationId": "OAuthService_Authenticate",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/v1OAuthenticateCallResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/OAuthenticateCallRequest"
+            }
+          }
+        ],
+        "tags": [
+          "OAuthService"
+        ],
+        "security": []
+      }
+    }
+  },
+  "definitions": {
+    "OAuthenticateCallRequest": {
+      "type": "object",
+      "properties": {
+        "grant_type": {
+          "type": "string",
+          "enum": [
+            "password",
+            "refresh_token"
+          ]
+        },
+        "client_id": {
+          "type": "string"
+        },
+        "username": {
+          "type": "string"
+        },
+        "password": {
+          "type": "string"
+        },
+        "refresh_token": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "grant_type",
+        "client_id"
+      ]
+    },
+    "protobufAny": {
+      "type": "object",
+      "properties": {
+        "@type": {
+          "type": "string"
+        }
+      },
+      "additionalProperties": {}
+    },
+    "rpcStatus": {
+      "type": "object",
+      "properties": {
+        "code": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "message": {
+          "type": "string"
+        },
+        "details": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "$ref": "#/definitions/protobufAny"
+          }
+        }
+      }
+    },
+    "v1OAuthenticateCallResponse": {
+      "type": "object",
+      "properties": {
+        "access_token": {
+          "type": "string"
+        },
+        "refresh_token": {
+          "type": "string"
+        },
+        "expires_in": {
+          "type": "integer",
+          "format": "int64",
+          "default": "300"
+        },
+        "token_type": {
+          "type": "string",
+          "default": "Bearer"
+        }
+      }
+    }
+  }
+}
