@@ -10,6 +10,7 @@ use (
 	./libs/database
 	./libs/logger
 	./libs/pool
+    ./libs/app
 
 	./protos
 )

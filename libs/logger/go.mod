@@ -1,6 +1,6 @@
 module github.com/kitanoyoru/kitaDriveBot/libs/logger
 
-go 1.21.3
+go 1.21
 
 require go.uber.org/zap v1.26.0
 

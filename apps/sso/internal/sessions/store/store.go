@@ -1,17 +1,15 @@
 package store
 
 import (
-	_ "github.com/jinzhu/gorm/dialects/postgres"
-	"github.com/kitanoyoru/kitaDriveBot/apps/sso/internal/models"
-	"github.com/kitanoyoru/kitaDriveBot/apps/sso/internal/repos"
+	"github.com/jmoiron/sqlx"
+	"github.com/kitanoyoru/kitaDriveBot/apps/sso/internal/sessions/store/repositories"
 	"github.com/kitanoyoru/kitaDriveBot/libs/database"
 	"github.com/kitanoyoru/kitaDriveBot/libs/logger"
-	"gorm.io/gorm"
 )
 
 type StoreSession struct {
-	db   *gorm.DB
-	User *repos.User
+	db   *sqlx.DB
+	User *repositories.User
 }
 
 func NewStoreSession(logger *logger.Logger, config *database.DatabaseConfig) (*StoreSession, error) {
@@ -20,9 +18,9 @@ func NewStoreSession(logger *logger.Logger, config *database.DatabaseConfig) (*S
 		return nil, err
 	}
 
-	db.AutoMigrate(models.User{})
+	// TODO: migrate
 
-	personRepository := repos.NewUser(logger, db)
+	personRepository := repositories.NewUser(logger, db)
 
 	return &StoreSession{
 		db,
@@ -31,10 +29,5 @@ func NewStoreSession(logger *logger.Logger, config *database.DatabaseConfig) (*S
 }
 
 func (s *StoreSession) Close() error {
-	sqlDB, err := s.db.DB()
-	if err != nil {
-		return err
-	}
-
-	return sqlDB.Close()
+	return s.db.Close()
 }

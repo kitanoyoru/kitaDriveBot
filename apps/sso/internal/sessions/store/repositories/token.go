@@ -1,4 +1,4 @@
-package repos
+package repositories
 
 import (
 	"github.com/kitanoyoru/kitaDriveBot/apps/sso/internal/config"

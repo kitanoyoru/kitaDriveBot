@@ -1,6 +1,6 @@
 module github.com/kitanoyoru/kitaDriveBot/libs/cache
 
-go 1.21.3
+go 1.21
 
 require github.com/redis/go-redis/v9 v9.3.0
 
