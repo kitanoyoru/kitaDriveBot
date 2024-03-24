@@ -1,6 +1,8 @@
 package store
 
 import (
+	"context"
+
 	"github.com/jmoiron/sqlx"
 	"github.com/kitanoyoru/kitaDriveBot/apps/sso/internal/sessions/store/repositories"
 	"github.com/kitanoyoru/kitaDriveBot/libs/database"
@@ -12,13 +14,11 @@ type StoreSession struct {
 	User *repositories.User
 }
 
-func NewStoreSession(logger *logger.Logger, config *database.DatabaseConfig) (*StoreSession, error) {
-	db, err := database.ConnectToDB(config)
+func NewStoreSession(ctx context.Context, logger *logger.Logger, config *database.DatabaseConfig) (*StoreSession, error) {
+	db, err := database.ConnectToDB(ctx, config)
 	if err != nil {
 		return nil, err
 	}
-
-	// TODO: migrate
 
 	personRepository := repositories.NewUser(logger, db)
 

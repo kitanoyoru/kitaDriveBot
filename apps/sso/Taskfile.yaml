@@ -1,0 +1,11 @@
+# See: https://taskfile.dev/api/
+
+version: "3"
+
+tasks:
+  migrate:
+    desc: "Make migrations"
+    cmds:
+      - go-bindata -nocompress -pkg migrations -prefix=migrations/ -o pkg/migrations/migrations.go -ignore=.go$  ./migrations/...
+
+

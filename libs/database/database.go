@@ -1,6 +1,7 @@
 package database
 
 import (
+	"context"
 	"fmt"
 
 	"github.com/jmoiron/sqlx"
@@ -10,13 +11,13 @@ const (
 	PostgreSQLName = "postgres"
 )
 
-func ConnectToDB(cfg *DatabaseConfig) (*sqlx.DB, error) {
+func ConnectToDB(ctx context.Context, cfg *DatabaseConfig) (*sqlx.DB, error) {
 	dsn, err := getDSN(cfg)
 	if err != nil {
 		return nil, err
 	}
 
-	return sqlx.Connect(cfg.Name, dsn)
+	return sqlx.ConnectContext(ctx, cfg.Name, dsn)
 }
 
 func getDSN(cfg *DatabaseConfig) (string, error) {
