@@ -8,16 +8,14 @@ import (
 
 	"github.com/kitanoyoru/kitaDriveBot/apps/sso/internal/internal/user"
 	"github.com/kitanoyoru/kitaDriveBot/libs/hasher"
-	"github.com/kitanoyoru/kitaDriveBot/libs/logger"
 	txLib "github.com/kitanoyoru/kitaDriveBot/libs/transactor"
 )
 
-func New(storage user.Storage, hasher hasher.Hasher, transactor txLib.Transactor, logger *logger.Logger) user.Service {
+func New(storage user.Storage, hasher hasher.Hasher, transactor txLib.Transactor) user.Service {
 	return &service{
 		storage:    storage,
 		hasher:     hasher,
 		transactor: transactor,
-		logger:     logger,
 	}
 }
 
@@ -25,11 +23,14 @@ type service struct {
 	storage    user.Storage
 	hasher     hasher.Hasher
 	transactor txLib.Transactor
-	logger     *logger.Logger
 }
 
 func (s *service) ListUsers(ctx context.Context, req user.ListUsersRequest) ([]user.User, error) {
 	return s.storage.ListUsers(ctx, user.WithIDs(req.IDs))
+}
+
+func (s *service) GetUser(ctx context.Context, id string) (user.User, error) {
+	return s.storage.GetUser(ctx, id)
 }
 
 func (s *service) CreateUser(ctx context.Context, req user.CreateUserRequest) (user.User, error) {

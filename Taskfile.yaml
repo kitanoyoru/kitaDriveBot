@@ -3,6 +3,9 @@
 version: "3"
 
 tasks:
+  default:
+    cmds:
+      - task: sync
   dev:
     desc: "Install all needed tools for development"
     cmds:

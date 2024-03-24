@@ -11,6 +11,7 @@ var (
 
 type Service interface {
 	ListUsers(ctx context.Context, req ListUsersRequest) ([]User, error)
+	GetUser(ctx context.Context, id string) (User, error)
 	CreateUser(ctx context.Context, req CreateUserRequest) (User, error)
 	UpdateUser(ctx context.Context, req UpdateUserRequest) (User, error)
 	DeleteUser(ctx context.Context, id string) error

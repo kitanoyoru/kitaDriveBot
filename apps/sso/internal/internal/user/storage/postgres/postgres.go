@@ -9,18 +9,15 @@ import (
 	"github.com/jmoiron/sqlx"
 
 	"github.com/kitanoyoru/kitaDriveBot/apps/sso/internal/internal/user"
-	"github.com/kitanoyoru/kitaDriveBot/libs/logger"
 )
 
 type User struct {
-	db     *sqlx.DB
-	logger *logger.Logger
+	db *sqlx.DB
 }
 
-func New(logger *logger.Logger, db *sqlx.DB) user.Storage {
+func New(db *sqlx.DB) user.Storage {
 	return &User{
-		db:     db,
-		logger: logger,
+		db: db,
 	}
 }
 

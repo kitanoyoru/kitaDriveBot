@@ -11,7 +11,7 @@ const (
 	PostgreSQLName = "postgres"
 )
 
-func ConnectToDB(ctx context.Context, cfg *DatabaseConfig) (*sqlx.DB, error) {
+func ConnectToDB(ctx context.Context, cfg DatabaseConfig) (*sqlx.DB, error) {
 	dsn, err := getDSN(cfg)
 	if err != nil {
 		return nil, err
@@ -20,7 +20,7 @@ func ConnectToDB(ctx context.Context, cfg *DatabaseConfig) (*sqlx.DB, error) {
 	return sqlx.ConnectContext(ctx, cfg.Name, dsn)
 }
 
-func getDSN(cfg *DatabaseConfig) (string, error) {
+func getDSN(cfg DatabaseConfig) (string, error) {
 	switch cfg.Name {
 	case PostgreSQLName:
 		return fmt.Sprintf(

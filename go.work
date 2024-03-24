@@ -8,8 +8,8 @@ use (
 
 	./libs/cache
 	./libs/database
+	./libs/grpc
 	./libs/hasher
-	./libs/logger
 	./libs/pool
 	./libs/transactor
 

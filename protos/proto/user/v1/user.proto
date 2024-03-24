@@ -45,6 +45,7 @@ service UserService {
 
 message ListUsersCall {
   message Request {
+      repeated string ids = 1;
   }
 
   message Response {

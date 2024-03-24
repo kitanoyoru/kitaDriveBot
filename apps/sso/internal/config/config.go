@@ -1,23 +1,15 @@
 package config
 
-import (
-	"github.com/kitanoyoru/kitaDriveBot/libs/cache"
-	"github.com/kitanoyoru/kitaDriveBot/libs/database"
-	"github.com/kitanoyoru/kitaDriveBot/libs/logger"
-)
+import "github.com/kitanoyoru/kitaDriveBot/libs/database"
 
 type Config struct {
-	Logger   *logger.Logger           `json:"logger,omitempty"`
-	Grpc     *GrpcConfig              `json:"http,omitempty"`
-	Database *database.DatabaseConfig `json:"database,omitempty"`
-	Cache    *cache.RedisConfig       `json:"cache,omitempty"`
-	Kafka    *KafkaConfig             `json:"kafka,omitempty"`
+	Logger                  `json:"logger"`
+	GrpcConfig              `json:"http"`
+	database.DatabaseConfig `json:"database"`
 }
 
-type KafkaConfig struct {
-	BrokerList []string `json:"broker_list"`
-	Topic      string   `json:"topic"`
-	MaxRetry   int      `json:"max_retry"`
+type Logger struct {
+	LogLevel string `json:"log_level"`
 }
 
 type RedisConfig struct {
@@ -25,5 +17,5 @@ type RedisConfig struct {
 }
 
 type GrpcConfig struct {
-	Port string `json:"port"`
+	GRPCEndpoint string `json:"endpoint"`
 }
