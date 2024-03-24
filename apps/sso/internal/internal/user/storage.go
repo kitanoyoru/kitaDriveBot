@@ -4,6 +4,7 @@ import "context"
 
 type Storage interface {
 	ListUsers(ctx context.Context, filters ...ListUsersFilter) ([]User, error)
+	GetUser(ctx context.Context, id string) (User, error)
 	CreateUser(ctx context.Context, req User) (User, error)
 	UpdateUser(ctx context.Context, req User) (User, error)
 	DeleteUser(ctx context.Context, id string) error

@@ -2,6 +2,8 @@ package postgres
 
 import (
 	"context"
+	"database/sql"
+	"errors"
 
 	sq "github.com/Masterminds/squirrel"
 	"github.com/jmoiron/sqlx"
@@ -15,7 +17,7 @@ type User struct {
 	logger *logger.Logger
 }
 
-func New(logger *logger.Logger, db *sqlx.DB) *User {
+func New(logger *logger.Logger, db *sqlx.DB) user.Storage {
 	return &User{
 		db:     db,
 		logger: logger,
@@ -80,6 +82,48 @@ func (s *User) ListUsers(ctx context.Context, filters ...user.ListUsersFilter) (
 	}
 
 	return users, nil
+}
+
+func (s *User) GetUser(ctx context.Context, id string) (user.User, error) {
+	query := sq.StatementBuilder.
+		PlaceholderFormat(sq.Dollar).
+		Select(
+			"id",
+			"first_name",
+			"last_name",
+			"email",
+			"hashed_password",
+			"created_at",
+			"updated_at",
+		).
+		From("users").
+		OrderBy("created_at DESC")
+
+	sqlQuery, args, err := query.ToSql()
+	if err != nil {
+		return user.User{}, err
+	}
+
+	var u user.User
+	row := s.db.QueryRowxContext(ctx, sqlQuery, args...)
+	err = row.Scan(
+		&u.ID,
+		&u.FirstName,
+		&u.LastName,
+		&u.Email,
+		&u.HashedPassword,
+		&u.CreatedAt,
+		&u.UpdatedAt,
+	)
+	if err != nil {
+		if errors.Is(err, sql.ErrNoRows) {
+			return user.User{}, user.ErrUserNotFound
+		}
+
+		return user.User{}, err
+	}
+
+	return u, nil
 }
 
 func (s *User) CreateUser(ctx context.Context, req user.User) (user.User, error) {

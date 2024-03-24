@@ -8,8 +8,10 @@ use (
 
 	./libs/cache
 	./libs/database
+	./libs/hasher
 	./libs/logger
 	./libs/pool
+	./libs/transactor
 
 	./protos
 )
