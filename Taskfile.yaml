@@ -24,4 +24,4 @@ tasks:
     desc: "Build MS images (buider and production)"
     cmds:
       - docker buildx build --file .docker/builder/Dockerfile . --build-arg "GITHUB_USERNAME=$GITLAB_USERNAME" --build-arg "GITHULAB_PAT=$GITLAB_PAT" --tag "kitanoyoru/kitadrivebot.v1.builder:latest"
-       docker buildx build --file apps/sso/Dockerfile . --tag "kitanoyoru/kitadrivebot.v1.sso:latest"
+      - docker buildx build --file apps/sso/Dockerfile . --tag "kitanoyoru/kitadrivebot.v1.sso:latest"
