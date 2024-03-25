@@ -3,17 +3,13 @@ package config
 import "github.com/kitanoyoru/kitaDriveBot/libs/database"
 
 type Config struct {
-	Logger                  `json:"logger"`
-	GrpcConfig              `json:"http"`
+	GrpcConfig              `json:"grpc"`
 	database.DatabaseConfig `json:"database"`
+	LoggerConfig            `json:"logger"`
 }
 
-type Logger struct {
+type LoggerConfig struct {
 	LogLevel string `json:"log_level"`
-}
-
-type RedisConfig struct {
-	Url string `json:"url"`
 }
 
 type GrpcConfig struct {

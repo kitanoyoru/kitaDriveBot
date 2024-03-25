@@ -3,9 +3,19 @@
 version: "3"
 
 tasks:
+  default:
+    cmds:
+      - task: migrate
+      - task: mockgen
+
   migrate:
     desc: "Make migrations"
     cmds:
       - go-bindata -nocompress -pkg migrations -prefix=migrations/ -o pkg/migrations/migrations.go -ignore=.go$  ./migrations/...
+
+  mockgen:
+    desc: "Generate storage mocks"
+    cmds:
+      - mockgen -source=internal/internal/user/storage.go -destination=internal/internal/user/mock/storage.go -package=usermock
 
 
