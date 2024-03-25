@@ -21,5 +21,5 @@ ENV GOOS=linux
 ENV GOARCH=amd64
 ENV CGO_ENABLED=0
 
-RUN go build -v -o /usr/local/bin/sso apps/sso/cmd/main.go 
+RUN go build -gcflags='all=-N -l' -v -o /usr/local/bin/sso apps/sso/cmd/main.go 
 
