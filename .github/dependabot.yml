@@ -5,7 +5,21 @@
 
 version: 2
 updates:
-  - package-ecosystem: "gomod" # See documentation for possible values
-    directory: "/" # Location of package manifests
+  - package-ecosystem: gomod
+    open-pull-requests-limit: 5
+    directory: "/"
     schedule:
-      interval: "daily"
+      interval: daily
+  - package-ecosystem: github-actions
+    directory: "/"
+    open-pull-requests-limit: 3
+    schedule:
+      interval: weekly
+    groups:
+      github-actions:
+        patterns:
+        - "actions/*"
+        - "github/codeql-action"
+      docker:
+        patterns:
+        - "docker/*"
