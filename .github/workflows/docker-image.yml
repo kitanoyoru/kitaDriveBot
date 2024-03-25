@@ -7,12 +7,17 @@ on:
     branches: [ "master" ]
 
 jobs:
-
   build:
-
     runs-on: ubuntu-latest
 
     steps:
     - uses: actions/checkout@v3
-    - name: Build the Docker image
-      run: docker build .apps/service --file Dockerfile --tag my-image-name:$(date +%s)
+    - name: Build builder image 
+      run: docker buildx build --file .docker/builder/Dockerfile . \
+            --build-arg "GITHUB_USERNAME=$GITLAB_USERNAME" \
+            --build-arg "GITHULAB_PAT=$GITLAB_PAT" \
+            --tag my-image-name:$(date +%s)
+
+    - name: Build SSO image 
+      run: docker buildx build --file apps/sso/Dockerfile . \
+            --tag my-image-name:$(date +%s)
