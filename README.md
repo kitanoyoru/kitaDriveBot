@@ -1,4 +1,8 @@
 # kitaDriveBot
+![License](https://img.shields.io/github/license/kitanoyoru/kitaDriveBot)
+![Coverage](https://img.shields.io/codecov/c/github/kitanoyoru/kitaDriveBot)
+![Relase](https://img.shields.io/github/v/release/kitanoyoru/kitaDriveBot.svg?include_prereleases)
+
 Telegram bot for uploading files to Google Drive account
 
 # DevMap:
