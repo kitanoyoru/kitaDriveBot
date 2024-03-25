@@ -6,18 +6,18 @@ import (
 	"errors"
 
 	sq "github.com/Masterminds/squirrel"
-	"github.com/jmoiron/sqlx"
+	"github.com/jackc/pgx/v5/pgxpool"
 
 	"github.com/kitanoyoru/kitaDriveBot/apps/sso/internal/internal/user"
 )
 
 type User struct {
-	db *sqlx.DB
+	dbPool *pgxpool.Pool
 }
 
-func New(db *sqlx.DB) user.Storage {
+func New(dbPool *pgxpool.Pool) user.Storage {
 	return &User{
-		db: db,
+		dbPool: dbPool,
 	}
 }
 
@@ -50,7 +50,7 @@ func (s *User) ListUsers(ctx context.Context, filters ...user.ListUsersFilter) (
 		return nil, err
 	}
 
-	rows, err := s.db.QueryContext(ctx, sqlQuery, args...)
+	rows, err := s.dbPool.Query(ctx, sqlQuery, args...)
 	if err != nil {
 		return nil, err
 	}
@@ -102,7 +102,7 @@ func (s *User) GetUser(ctx context.Context, id string) (user.User, error) {
 	}
 
 	var u user.User
-	row := s.db.QueryRowxContext(ctx, sqlQuery, args...)
+	row := s.dbPool.QueryRow(ctx, sqlQuery, args...)
 	err = row.Scan(
 		&u.ID,
 		&u.FirstName,
@@ -151,7 +151,7 @@ func (s *User) CreateUser(ctx context.Context, req user.User) (user.User, error)
 		return user.User{}, err
 	}
 
-	_, err = s.db.ExecContext(ctx, sqlQuery, args...)
+	_, err = s.dbPool.Exec(ctx, sqlQuery, args...)
 	if err != nil {
 		return user.User{}, err
 	}
@@ -174,7 +174,7 @@ func (s *User) UpdateUser(ctx context.Context, req user.User) (user.User, error)
 		return user.User{}, err
 	}
 
-	_, err = s.db.ExecContext(ctx, sqlQuery, args...)
+	_, err = s.dbPool.Exec(ctx, sqlQuery, args...)
 	if err != nil {
 		return user.User{}, err
 	}
@@ -193,7 +193,7 @@ func (s *User) DeleteUser(ctx context.Context, id string) error {
 		return err
 	}
 
-	_, err = s.db.ExecContext(ctx, sqlQuery, args...)
+	_, err = s.dbPool.Exec(ctx, sqlQuery, args...)
 	if err != nil {
 		return err
 	}

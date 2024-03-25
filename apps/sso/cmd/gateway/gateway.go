@@ -11,7 +11,6 @@ import (
 
 	"github.com/kitanoyoru/kitaDriveBot/apps/sso/internal/app/gateway"
 	"github.com/kitanoyoru/kitaDriveBot/apps/sso/internal/config"
-	"github.com/kitanoyoru/kitaDriveBot/libs/database"
 )
 
 func Command() *cobra.Command {
@@ -22,12 +21,8 @@ func Command() *cobra.Command {
 				GrpcConfig: config.GrpcConfig{
 					GRPCEndpoint: os.Getenv("GRPC_ENDPOINT"),
 				},
-				DatabaseConfig: database.DatabaseConfig{
-					Name:     os.Getenv("DATABASE_NAME"),
-					Host:     os.Getenv("DATABASE_HOST"),
-					Port:     os.Getenv("DATABASE_PORT"),
-					Password: os.Getenv("DATABASE_PASSWORD"),
-					Database: os.Getenv("DATABASE_DB"),
+				DatabaseConfig: config.DatabaseConfig{
+					ConnectionString: os.Getenv("DATABASE_CONNECTION_STRING"),
 				},
 				LoggerConfig: config.LoggerConfig{
 					LogLevel: os.Getenv("LOG_LEVEL"),

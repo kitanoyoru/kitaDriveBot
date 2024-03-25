@@ -7,6 +7,8 @@ import (
 
 	"github.com/grpc-ecosystem/go-grpc-middleware/v2/interceptors/logging"
 	"github.com/grpc-ecosystem/go-grpc-middleware/v2/interceptors/recovery"
+	"github.com/jackc/pgx/v5/pgxpool"
+	"github.com/jackc/pgx/v5/tracelog"
 	"github.com/pkg/errors"
 	"github.com/rs/zerolog"
 	"github.com/rs/zerolog/log"
@@ -19,16 +21,14 @@ import (
 	userService "github.com/kitanoyoru/kitaDriveBot/apps/sso/internal/internal/user/service"
 	userStoragePostgres "github.com/kitanoyoru/kitaDriveBot/apps/sso/internal/internal/user/storage/postgres"
 	"github.com/kitanoyoru/kitaDriveBot/libs/app"
-	"github.com/kitanoyoru/kitaDriveBot/libs/database"
 	"github.com/kitanoyoru/kitaDriveBot/libs/grpc/interceptor"
 	"github.com/kitanoyoru/kitaDriveBot/libs/hasher/bcrypt"
-	sqlxTxLib "github.com/kitanoyoru/kitaDriveBot/libs/transactor/sqlx"
+	pgxZerolog "github.com/kitanoyoru/kitaDriveBot/libs/pgx/logger"
+	pgxpoolTxLib "github.com/kitanoyoru/kitaDriveBot/libs/transactor/pgxpool"
 	pb "github.com/kitanoyoru/kitaDriveBot/protos/gen/go/user/v1"
 )
 
 func NewApp(config config.Config) (app.App, error) {
-	ctx := context.Background()
-
 	lLevel, err := zerolog.ParseLevel(config.LogLevel)
 	if err != nil {
 		log.Warn().Err(err).Msg("failed to parse log level")
@@ -36,17 +36,17 @@ func NewApp(config config.Config) (app.App, error) {
 	}
 	zerolog.SetGlobalLevel(lLevel)
 
-	db, err := database.ConnectToDB(ctx, config.DatabaseConfig)
+	dbPool, err := getDBPool(config.DatabaseConfig.ConnectionString, config.LogLevel)
 	if err != nil {
-		return nil, err
+		return nil, errors.Wrap(err, "failed to get db pool")
 	}
 
-	transactor := sqlxTxLib.NewTransactor(db)
+	transactor := pgxpoolTxLib.NewTransactor(dbPool)
 
 	hasher := bcrypt.NewPasswordHasher(5)
 
 	// user
-	userStorage := userStoragePostgres.New(db)
+	userStorage := userStoragePostgres.New(dbPool)
 	userService := userService.New(userStorage, hasher, transactor)
 
 	var (
@@ -104,4 +104,28 @@ func (a *gateway) Run() error {
 func (a *gateway) Close() error {
 	a.grpcServer.GracefulStop()
 	return nil
+}
+
+func getDBPool(sqlConnectionString, logLevel string) (*pgxpool.Pool, error) {
+	pgxPoolConfig, err := pgxpool.ParseConfig(sqlConnectionString)
+	if err != nil {
+		return nil, errors.Wrap(err, "failed to parse pgx config")
+	}
+
+	traceLogLevel, err := tracelog.LogLevelFromString(logLevel)
+	if err != nil {
+		log.Warn().Err(err).Msg("failed to parse log level")
+		traceLogLevel = tracelog.LogLevelInfo
+	}
+	pgxPoolConfig.ConnConfig.Tracer = &tracelog.TraceLog{
+		Logger:   pgxZerolog.NewLogger(log.Logger, pgxZerolog.FromContext()),
+		LogLevel: traceLogLevel,
+	}
+
+	dbPool, err := pgxpool.NewWithConfig(context.Background(), pgxPoolConfig)
+	if err != nil {
+		return nil, errors.Wrap(err, "failed to create pgxpool")
+	}
+
+	return dbPool, nil
 }

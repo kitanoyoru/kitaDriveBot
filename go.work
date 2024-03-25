@@ -7,10 +7,11 @@ use (
 	./libs/app
 
 	./libs/cache
-	./libs/database
 	./libs/grpc
 	./libs/hasher
+	./libs/pgx
 	./libs/pool
+	./libs/test
 	./libs/transactor
 
 	./protos
