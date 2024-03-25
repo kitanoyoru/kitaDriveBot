@@ -1,4 +1,4 @@
-package tools
+package test
 
 import (
 	"context"
@@ -19,7 +19,7 @@ type DBTest struct {
 	dbPool *pgxpool.Pool
 }
 
-func (dbTest *DBTest) CreateDB(t *testing.T) (*pgxpool.Pool, error) {
+func (dbTest *DBTest) CreateDB(t *testing.T, props ...MigrationProperty) (*pgxpool.Pool, error) {
 	if dbTest.dbPool == nil {
 		sqlConnectionString, err := getSQLConnectionString(t)
 		if err != nil {
@@ -34,12 +34,17 @@ func (dbTest *DBTest) CreateDB(t *testing.T) (*pgxpool.Pool, error) {
 		dbTest.dbPool = dbPool
 	}
 
+	migrationsProps := &MigrationProperties{}
+	for _, p := range props {
+		p(migrationsProps)
+	}
+
 	err := optimizeDB(dbTest.dbPool)
 	if err != nil {
 		return nil, errors.Wrap(err, "failed to optimize db")
 	}
 
-	return createDB(dbTest.dbPool)
+	return createDB(dbTest.dbPool, migrationsProps)
 }
 
 func optimizeDB(dbPool *pgxpool.Pool) error {
@@ -97,7 +102,7 @@ func getDBPool(sqlConnectionString string) (*pgxpool.Pool, error) {
 	return dbPool, nil
 }
 
-func createDB(srcDBPool *pgxpool.Pool) (*pgxpool.Pool, error) {
+func createDB(srcDBPool *pgxpool.Pool, migrationProps *MigrationProperties) (*pgxpool.Pool, error) {
 	dbName := strings.ReplaceAll("test"+uuid.NewString(), "-", "")
 
 	_, err := srcDBPool.Exec(context.Background(), "CREATE DATABASE "+dbName)
@@ -118,7 +123,7 @@ func createDB(srcDBPool *pgxpool.Pool) (*pgxpool.Pool, error) {
 		return nil, errors.Wrap(err, "failed to create db pool")
 	}
 
-	err = ApplyMigrations(sqlConnectionString)
+	err = migrationProps.ApplyMigrations(sqlConnectionString)
 	if err != nil {
 		return nil, errors.Wrap(err, "failed to apply migrations")
 	}
