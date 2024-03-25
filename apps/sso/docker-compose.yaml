@@ -9,7 +9,7 @@ services:
   migrate-up:
     image: ${DOCKER_IMAGE}:${DOCKER_IMAGE_TAG}
     environment:
-      SQL_CONNECTION_STRING: postgres://${POSTGRES_USERNAME}:${POSTGRES_PASSWORD}@postgres:5432/kita?sslmode=disable
+      SQL_CONNECTION_STRING: postgres://${POSTGRES_USERNAME}:${POSTGRES_PASSWORD}@postgres:5432/kitadrivebot.v1.sso?sslmode=disable
     command:
       - migrate
       - up
@@ -22,25 +22,3 @@ services:
       - "26257:26257"
       - "8080:8080"
     command: start-single-node --insecure
-
-  redis:
-    image: redis:6.2-alpine
-    command: redis-server --appendonly yes --requirepass yourStrongPassword!123
-    ports:
-      - "6379:6379"
-    restart: always
-    environment:
-      - REDIS_REPLICATION_MODE=master
-    networks:
-      - app_network
-
-  redis-sentinel:
-    image: redis:6.2-alpine
-    depends_on:
-      - redis
-    entrypoint: redis-sentinel /usr/local/etc/redis/sentinel.conf
-    volumes:
-      - ./config/redis-sentinel.conf:/usr/local/etc/redis/sentinel.conf
-    ports:
-      - "26379:26379"
-    restart: always
