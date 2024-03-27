@@ -45,7 +45,7 @@ service UserService {
 
 message ListUsersCall {
   message Request {
-      repeated string ids = 1;
+    repeated string ids = 1;
   }
 
   message Response {
@@ -67,8 +67,16 @@ message UpdateUserCall {
   message Request {
     string id = 1 [(google.api.field_behavior) = REQUIRED];
     string email = 2 [(validate.rules).string.email = true];
-    string first_name = 3 [json_name = "first_name", (google.api.field_behavior) = REQUIRED, (validate.rules).string.min_len = 1];
-    string last_name = 4 [json_name = "last_name", (google.api.field_behavior) = REQUIRED, (validate.rules).string.min_len = 1];
+    string first_name = 3 [
+      json_name = "first_name",
+      (google.api.field_behavior) = REQUIRED,
+      (validate.rules).string.min_len = 1
+    ];
+    string last_name = 4 [
+      json_name = "last_name",
+      (google.api.field_behavior) = REQUIRED,
+      (validate.rules).string.min_len = 1
+    ];
   }
 
   message Response {
@@ -79,8 +87,16 @@ message UpdateUserCall {
 message CreateUserCall {
   message Request {
     string email = 1;
-    string first_name = 2 [json_name = "first_name", (google.api.field_behavior) = REQUIRED, (validate.rules).string.min_len = 1];
-    string last_name = 3 [json_name = "last_name", (google.api.field_behavior) = REQUIRED, (validate.rules).string.min_len = 1];
+    string first_name = 2 [
+      json_name = "first_name",
+      (google.api.field_behavior) = REQUIRED,
+      (validate.rules).string.min_len = 1
+    ];
+    string last_name = 3 [
+      json_name = "last_name",
+      (google.api.field_behavior) = REQUIRED,
+      (validate.rules).string.min_len = 1
+    ];
     string password = 4;
   }
 
@@ -94,8 +110,7 @@ message DeleteUserCall {
     string id = 1 [(google.api.field_behavior) = REQUIRED];
   }
 
-  message Response {
-  }
+  message Response {}
 }
 
 message User {
@@ -103,6 +118,9 @@ message User {
   string email = 2;
   string first_name = 3 [json_name = "first_name"];
   string last_name = 4 [json_name = "last_name"];
-  google.protobuf.Timestamp created_at = 5 [(google.api.field_behavior) = OUTPUT_ONLY];
-  google.protobuf.Timestamp updated_at = 6 [(google.api.field_behavior) = OUTPUT_ONLY];
+  google.protobuf.Timestamp created_at = 5
+      [(google.api.field_behavior) = OUTPUT_ONLY];
+  google.protobuf.Timestamp updated_at = 6
+      [(google.api.field_behavior) = OUTPUT_ONLY];
 }
+

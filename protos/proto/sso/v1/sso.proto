@@ -10,7 +10,8 @@ import "protoc-gen-openapiv2/options/annotations.proto";
 
 service OAuthService {
   // {{import "proto/sso/v1/sso.description.md"}}
-  rpc Authenticate(OAuthenticateCall.Request) returns (OAuthenticateCall.Response) {
+  rpc Authenticate(OAuthenticateCall.Request)
+      returns (OAuthenticateCall.Response) {
     option (google.api.http) = {
       post: "/api/v1/oauth/token"
       body: "*"
@@ -22,31 +23,36 @@ service OAuthService {
 }
 
 message OAuthenticateCall {
-    message Request {
-        string grant_type = 1 [
-            json_name = "grant_type", 
-            (google.api.field_behavior) = REQUIRED, 
-            (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {enum: ["password", "refresh_token"]}
-        ];
-        string client_id = 2 [
-            json_name = "client_id", 
-            (google.api.field_behavior) = REQUIRED
-        ];
-        string username = 3;
-        string password = 4;
-        string refresh_token = 5 [json_name = "refresh_token"];
-    }
+  message Request {
+    string grant_type = 1 [
+      json_name = "grant_type",
+      (google.api.field_behavior) = REQUIRED,
+      (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
+        enum: [ "password", "refresh_token" ]
+      }
+    ];
+    string client_id = 2
+        [json_name = "client_id", (google.api.field_behavior) = REQUIRED];
+    string username = 3;
+    string password = 4;
+    string refresh_token = 5 [json_name = "refresh_token"];
+  }
 
-    message Response {
-        string access_token = 1 [json_name = "access_token"];
-        string refresh_token = 2 [json_name = "refresh_token"];
-        uint32 expires_in = 3 [
-            json_name = "expires_in", 
-            (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {default: "300"}
-        ];
-       string token_type = 4 [
-            json_name = "token_type", 
-            (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {default: "Bearer"}
-        ];
-    }
-} 
+  message Response {
+    string access_token = 1 [json_name = "access_token"];
+    string refresh_token = 2 [json_name = "refresh_token"];
+    uint32 expires_in = 3 [
+      json_name = "expires_in",
+      (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
+        default: "300"
+      }
+    ];
+    string token_type = 4 [
+      json_name = "token_type",
+      (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
+        default: "Bearer"
+      }
+    ];
+  }
+}
+
