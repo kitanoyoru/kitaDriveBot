@@ -1,0 +1,11 @@
+services:
+  bot:
+    build: .
+    env_file:
+      - .env
+    environment:
+      - GOOGLE_TOKEN_PATH=/app/data/token.json
+    volumes:
+      - ./data:/app/data
+    restart: unless-stopped
+    command: ["run"]
