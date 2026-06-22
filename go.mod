@@ -3,7 +3,7 @@ module github.com/kitanoyoru/kitaDriveBot
 go 1.25.0
 
 require (
-	github.com/go-telegram/bot v1.11.1
+	github.com/go-telegram/bot v1.21.0
 	github.com/joho/godotenv v1.5.1
 	github.com/rs/zerolog v1.33.0
 	github.com/spf13/cobra v1.10.2
